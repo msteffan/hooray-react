@@ -8,6 +8,10 @@ var createBrowserHistory = require('history/lib/createBrowserHistory')
 var helper = require('./helpers')
 var History = ReactRouter.History;
 
+// Firebase
+var Rebase = require('re-base')
+var base = Rebase.createClass('https://boiling-fire-6762.firebaseio.com/')
+
 // App
 var App = React.createClass({
   getInitialState : function(){
@@ -15,6 +19,12 @@ var App = React.createClass({
       fishes : {},
       order : {}
     }
+  },
+  componentDidMount : function(){
+    base.syncState(this.props.params.storeId + '/fishes', {
+      context: this,
+      state: 'fishes'
+    });
   },
   addFish : function(fish){
     var timestamp = (new Date()).getTime();
@@ -141,15 +151,19 @@ var Order = React.createClass({
   },
   render : function(){
     var orderIds = Object.keys(this.props.order);
-    var total = orderIds.reduce((prevTotal, key)=>{
+
+    var total = orderIds.reduce((prevTotal, key)=> {
       var fish = this.props.fishes[key];
       var count = this.props.order[key];
-      var isAvailable = fish && fish.status === "available";
-      if (fish && isAvailable){
+      var isAvailable = fish && fish.status === 'available';
+
+      if(fish && isAvailable) {
         return prevTotal + (count * parseInt(fish.price) || 0);
       }
+
       return prevTotal;
     }, 0);
+
     return (
       <div className="order-wrap">
         <h2 className="order-title">Your Order</h2>
