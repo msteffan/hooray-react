@@ -28,17 +28,17 @@ var App = React.createClass({
     }
   },
   componentDidMount : function(){
-    base.syncState(this.props.params.storeId + '/fishes', {
-      context: this,
-      state: 'fishes'
-    });
-    var localStorageRef = localStorage.getItem('order-' + this.props.params.storeId)
-    if (localStorageRef){
-      this.setState({order: JSON.parse(localStorageRef) })
-    }
+    // base.syncState(this.props.params.storeId + '/fishes', {
+    //   context: this,
+    //   state: 'fishes'
+    // });
+    // var localStorageRef = localStorage.getItem('order-' + this.props.params.storeId)
+    // if (localStorageRef){
+    //   this.setState({order: JSON.parse(localStorageRef) })
+    // }
   },
   componentWillUpdate : function(nextProps, nextState){
-    localStorage.setItem('order-' + this.props.params.storeId, JSON.stringify(nextState.order));
+    // localStorage.setItem('order-' + this.props.params.storeId, JSON.stringify(nextState.order));
   },
   addFish : function(fish){
     var timestamp = (new Date()).getTime();
@@ -257,12 +257,12 @@ var Inventory = React.createClass({
 
 
 // Routes
-var routes = (
-  <Router history={createBrowserHistory()}>
-    <Route path="/" component={StorePicker}/>
-    <Route path="/store/:storeId" component={App}/>
-    <Route path="*" component={NotFound}/>
-  </Router>
-)
+// var routes = (
+//   <Router history={createBrowserHistory()}>
+//     <Route path="/" component={StorePicker}/>
+//     <Route path="/store/:storeId" component={App}/>
+//     <Route path="*" component={NotFound}/>
+//   </Router>
+// )
 
-ReactDOM.render(routes, document.querySelector("#main"))
+ReactDOM.render(<App />, document.querySelector("#main"))
